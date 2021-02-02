@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/lib"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/lib"
 )
 
 func Test_ToJSON(t *testing.T) {

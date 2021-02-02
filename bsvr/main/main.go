@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/cli"
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/config"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/cli"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/config"
 )
 
 func main() {

@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/addr"
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/lib"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/addr"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/lib"
 )
 
 type InitialAccountType struct {

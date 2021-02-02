@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/block"
-	"github.com/Univ-Wyo-Education/S20-4010-a03/bsvr/hash"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/block"
+	"github.com/Univ-Wyo-Education/S21-4010-a03/bsvr/hash"
 )
 
 func TestMineBlock(t *testing.T) {
