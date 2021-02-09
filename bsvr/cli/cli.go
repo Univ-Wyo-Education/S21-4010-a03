@@ -210,7 +210,7 @@ func (cc *CLI) SendFundsTransaction(
 	return cc.InstructorSendFundsTransaction(from, sig, messageHash, message, to, amount, memo)
 
 	//
-	// Pseudo Code:
+	// Pseudo Code:  Assignment 03
 	// 1. Calculate the total value of the account 'from'.  Call this 'tot'.
 	//    You can do this by calling `cc.GetTotalValueForAccount(from)`.
 	// 2. If the total, `tot` is less than the amount that is to be transferred,
@@ -224,12 +224,11 @@ func (cc *CLI) SendFundsTransaction(
 	//    values for the 'from' account.  Delete this from the index.  These are the
 	// 	  values that have been spent.
 	//    ((( To delete from the index use the from value.  Convert it
-	//		to a stirng (the key for the index
+	//		to a stirng.  The key for the index
 	//		cc.BlockIndex.FindValue.AddrIndex  is a string.
 	//		Then use the builtin "delete" to remove this entire key.
 	//		"delete(cc.BlockIndex.FindValue.AddrIndex, fromConvertedToString)
-	//		You may have to check that the key exists in the "AddrIndex"
-	//		first ))))
+	//		)))
 	// 5. Create a new empty transaction.  Call `transctions.NewEmptyTx` to create.
 	//	  Pass in the 'memo' and the 'from' for this tranaction.
 	// 6. Convert the 'oldOutputs' into a set of new inputs.  The type is

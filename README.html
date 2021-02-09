@@ -702,22 +702,26 @@ ol {
     display: block;
     list-style-type: decimal;
 }
+.pagebreak { page-break-before: always; }
+.half { height: 200px; }
 </style>
 
 <div class="markdown-body">
 
-<h1>Homework 3 - transactions</h1>
+<h1>University of Wyoming, 4010-Blockchain, Assignment 03 - Transactions</h1>
 
-<p>Due Mar 14th.</p>
+<p>200pts total</p>
+
+<p>Due Feb 19</p>
 
 <h2>Transactions</h2>
 
-<p>In bitcoin and Ethereum you can send funds from one account to another.
+<p>In Bitcoin,  Ethereum and many other cryptocurrencies you can send funds from one account to another.
 This activity is captured in a transaction.</p>
 
 <p>In this assignment we are going to add transactions to our blockchain.</p>
 
-<p>You will need to implement code in <code>../03/bsvr/cli/cli.go</code> starting at
+<p>You will need to implement code in <code>./bsvr/cli/cli.go</code> starting at
 line 185.  The function is <code>func (cc *CLI) SendFundsTransaction(</code>.</p>
 
 <p>Side Note: notice how line continuation works in go with the
@@ -736,128 +740,126 @@ we have an index that tells us where to find these.  Verify that
 there is sufficient funds in the account then create inputs for
 our new block/new transaction that collects all of the funds.
 Given that we have the <code>sum</code> of the funds, now create 1 or 2
-output transactions.  First a transaction output to the destination
-<code>to</code> account.  If the amount of the funds is larger than the
-transferred amount then some &ldquo;change&rdquo; is owed back to the &ldquo;from&rdquo;
-account.  If &ldquo;change&rdquo; is needed then create a transaction output
-with the &ldquo;change&rdquo;.</p>
+output transactions.  First a transaction output to the destination</p>
 
-<p>The pseudo code is in a comment in the file <code>.../cli/cli.go</code> and it
-is reproduced below.</p>
-
-<pre><code>	//
-	// Pseudo Code:
-	// 1. Calcualte the total value of the account 'from'.  Call
-	//    this 'tot'.  You can do this by calling
-	//    `cc.GetTotalValueForAccount(from)`.
-	// 2. If the total, `tot` is less than the amount that is to be
-	//    transfered, `amount` then fail.  Return an error
-	//	  &quot;Insufficient funds&quot;.  The person is trying to bounce
-	//    a check.
-	// 3. Get the list of output tranactions.
-	//    Look in the file `.../transaactions/tx.go` for the
-	//    TxOutputType.  These need to be collected so that you.
-	//    Call this 'oldOutputs'.
-	// 4. Find the set of values that are pointed to in the index. 
-	//    These are the values for the 'from' account.  Delete this
-	//    from the index.  These are the values that have been spent.
-	//    ((( To delete from the index use the from value.  Convert it
-	//		to a stirng (the key for the index
-	//		cc.BlockIndex.FindValue.AddrIndex  is a string.
-	//		Then use the builtin &quot;delete&quot; to remove this entire key.
-	//		&quot;delete(cc.BlockIndex.FindValue.AddrIndex, fromConvertedToString)
-	//		You may have to check that the key exists in the &quot;AddrIndex&quot; 
-	//		first ))))
-	// 5. Create a new empty transaction.  Call `transctions.NewEmptyTx`
-	//    to create. Pass in the 'memo' and the 'from' for this
-	//    tranaction.
-	// 6. Convert the 'oldOutputs' into a set of new inputs.  The
-	//    type is `../transctions/tx.go` `TxInputType`.  Call
-	//    `transactions.CreateTxInputsFromOldOutputs` to do this.
-	// 7. Save the new inputs in the tx.Input.
-	// 8. Create the new output for the 'to' address.  Call
-	//    `transactions.CreateTxOutputWithFunds`.  Call this `txOut`.   
-	//    Take `txOut` and append it to the tranaction by calling
-	//    `transactions.AppendTxOutputToTx`.
-	// 9. Calcualte the amount of &quot;change&quot; - if it is larger than 0 then
-	//    we owe 'from' change.  Create a 2nd tranaction with the change.
-	//    Append to the tranaction the `TxOutputType`.
-	// 10. Return
-	//
-</code></pre>
-
-<h2>Steps that you will want to use</h2>
-
-<p>First you need to get the main program in <code>.../03/bsvr/main</code> to compile.  This means having
-the solution to assignment 3 in the <code>.../03/bsvr/merkle</code> directory.   Also you will need to
-fix <code>.../03/bsvr/cli.go</code> around line 190 to <code>return</code> and take out the code that is
-incomplete.  Go to the <code>.../03/bsvr/main</code> directory and:</p>
-
-<pre><code>	go build
-</code></pre>
-
-<p>You should end up with a <code>main</code> program or <code>main.exe</code> to run.</p>
-
-<p>Now you need to have a genesis block.  The code for this is already built.  You just have
-to run it.  In the <code>main</code> directory run:</p>
-
-<pre><code>	./main --create-genesis
-</code></pre>
-
-<p>This should create a directory <code>.../03/bsvr/main/data</code> with 2 files in it.  The file are
-in JSON format.  You should be able to edit the files with a text editor (vi or vim
-for example) and take a look at them.   The file with the long name (it is the
-hash of the block) is the first block in the chain.  This is the &ldquo;genesis&rdquo; block.
-A bunch of accounts have been created with 50000 tokens each.  The other file is
-<code>index.json</code>.  It is our index to finding stuff in the set of blocks.  Take a
-look at both files.</p>
-
-<p>If you need to run <code>./main --create-genesis</code> again (so that you are starting over
-with a fresh chain) then you will need to manually delete all the files in the
-<code>.../03/bsvr/main/data</code> directory.   I had to do this a bunch of times before I got
-the transaction code to work.</p>
-
-<h3>Other commands that are useful.</h3>
-
-<p>You can take a look at the accounts that have been created with:</p>
-
-<pre><code>	./main --list-accounts
-</code></pre>
-
-<p>and you can find out how much funds are in an account with:</p>
-
-<pre><code>	./main --show-balance 0x00000SomeAccountNumber
-</code></pre>
-
-<p>When you start out you should have a bunch of accounts with 500000
-tokens in each account.  The account numbers should look familiar.
-They are specified in the <code>./main/cfg.json</code> file and match with
-the accounts that Sasha emailed out.</p>
-
-<h3>Search for Code</h3>
-
-<p>Go and find all the stuff that already exists.</p>
+<h2>Pseudocode</h2>
 
 <ol>
-<li>in <code>.../03/bsvr/cli/cli.go</code> look for:
+<li>Calculate the total value of the account &lsquo;from&rsquo;.  Call this &lsquo;tot&rsquo;.
+You can do this by calling <code>cc.GetTotalValueForAccount(from)</code>.</li>
+<li>If the total, <code>tot</code> is less than the amount that is to be transferred,
+<code>amount</code> then fail.  Return an error &ldquo;Insufficient funds&rdquo;.  The person
+is trying to bounce a check.</li>
+<li>Get the list of output tranactions.
+Look in the file &hellip;/transaactions/tx.go for the TxOutputType.  These
+need to be collected so that you have them.
+Call this &lsquo;oldOutputs&rsquo;.</li>
+<li>Find the set of values that are pointed to in the index.  These are the
+values for the &lsquo;from&rsquo; account.  Delete this from the index.  These are the
+  values that have been spent.
+((( To delete from the index use the from value.  Convert it
+to a stirng.  The key for the index
+cc.BlockIndex.FindValue.AddrIndex  is a string.
+Then use the builtin &ldquo;delete&rdquo; to remove this entire key.
+&ldquo;delete(cc.BlockIndex.FindValue.AddrIndex, fromConvertedToString)
+)))</li>
+<li>Create a new empty transaction.  Call <code>transctions.NewEmptyTx</code> to create.
+Pass in the &lsquo;memo&rsquo; and the &lsquo;from&rsquo; for this tranaction.</li>
+<li>Convert the &lsquo;oldOutputs&rsquo; into a set of new inputs.  The type is
+../transctions/tx.go TxInputType.  Call <code>transactions.CreateTxInputsFromOldOutputs</code>
+to do this.</li>
+<li>Save the new inputs in the tx.Input.</li>
+<li>Create the new output for the &lsquo;to&rsquo; address.  Call <code>transactions.CreateTxOutputWithFunds</code>.
+Call this <code>txOut</code>.    Take <code>txOut</code> and append it to the transaction by calling
+<code>transactions.AppendTxOutputToTx</code>.</li>
+<li>Calculate the amount of &ldquo;change&rdquo; - if it is larger than 0 then we owe &lsquo;from&rsquo;
+change.  Create a 2nd transaction with the change.  Append to the transaction the
+TxOutputType.</li>
+<li>Return
 
-<ol>
-<li>GetTotalValueForAccount(acct)</li>
-<li>GetNonZeroForAccount(acct)</li>
-</ol></li>
-<li>in <code>.../03/bsvr/transactions/tx.go</code> look for:
 
-<ol>
-<li>NewEmptyTx(memo, acct)</li>
-<li>CreateTxInputsFromOldOutputs(oldOutputs)</li>
-<li>CreateTxOutputWithFunds(acct, amount)</li>
-<li>AppendTxOutputToTx(txToAppendTo, newTxOutputs)</li>
-</ol></li>
-<li>Look at how the index is stored in <code>.../03/bsvr/main/data/index.json</code> and how this
-is stored in memory.  Look at <code>.../03/bsvr/index/index.go</code>.</li>
-<li>Assume that the author is not so good at writing comments.  Add your own notes.  Look at test cases and
-see how stuff works.   Add your own test cases.  Add print statements to the code to see how things work.</li>
+<br /></li>
 </ol>
+
+<h2>index.json</h2>
+
+<p><code>index.json</code> is saved in the ./main/data directory.   This shows a before and after
+of what happens in the index.</p>
+
+<p>From index.js Before:</p>
+
+<pre><code>    &quot;0xe7b8a518bf1b5c4f01b2a7ee39a2800a982e06ee&quot;: {
+        &quot;Addr&quot;: &quot;e7b8a518bf1b5c4f01b2a7ee39a2800a982e06ee&quot;,
+        &quot;Value&quot;: [
+            { &quot;BlockIndex&quot;: 0, &quot;TxOffset&quot;: 8, &quot;TxOutputPos&quot;: 0 },
+            { &quot;BlockIndex&quot;: 2, &quot;TxOffset&quot;: 0, &quot;TxOutputPos&quot;: 1 }
+        ]
+    },
+    &quot;0x9d41e5938767466af28865e1c33071f1561d57a8&quot;: {
+        &quot;Addr&quot;: &quot;9d41e5938767466af28865e1c33071f1561d57a8&quot;,
+        &quot;Value&quot;: [
+            { &quot;BlockIndex&quot;: 8, &quot;TxOffset&quot;: 0, &quot;TxOutputPos&quot;: 0 }
+        ]
+    }
+</code></pre>
+
+<p>After:</p>
+
+<pre><code>    &quot;0xe7b8a518bf1b5c4f01b2a7ee39a2800a982e06ee&quot;: {
+        &quot;Addr&quot;: &quot;e7b8a518bf1b5c4f01b2a7ee39a2800a982e06ee&quot;,
+        &quot;Value&quot;: [
+            { &quot;BlockIndex&quot;: 8, &quot;TxOffset&quot;: 0, &quot;TxOutputPos&quot;: 1 }
+        ]
+    },
+    &quot;0x9d41e5938767466af28865e1c33071f1561d57a8&quot;: {
+        &quot;Addr&quot;: &quot;9d41e5938767466af28865e1c33071f1561d57a8&quot;,
+        &quot;Value&quot;: [
+            { &quot;BlockIndex&quot;: 0, &quot;TxOffset&quot;: 0, &quot;TxOutputPos&quot;: 0 },
+            { &quot;BlockIndex&quot;: 8, &quot;TxOffset&quot;: 0, &quot;TxOutputPos&quot;: 0 }
+        ]
+    }
+</code></pre>
+
+<h1>Data types in Code</h1>
+
+<p>from block/block.go:</p>
+
+<pre><code>    type BlockType struct {
+        Index         int                             // position of this block in the chain, 0, 1, 2, ...
+        Desc          string                          // if &quot;genesis&quot; string then this is a genesis block.
+        ThisBlockHash hash.BlockHashType              //
+        PrevBlockHash hash.BlockHashType              // This is 0 length if this is a &quot;genesis&quot; block
+        Nonce         uint64                          //
+        Seal          hash.SealType                   //
+        MerkleHash    hash.MerkleHashType             // AS-03
+        Tx            []*transactions.TransactionType // Add Transactions to Block Later, (AS-04 will do this)
+    }
+</code></pre>
+
+<p>from transactions/tx.go:</p>
+
+<pre><code>    type TransactionType struct {
+        TxOffset       int               // The position of this in the block.
+        Input          []TxInputType     // Set of inputs to a transaction
+        Output         []TxOutputType    // Set of outputs to a tranaction
+        ...
+    }
+
+    type TxInputType struct {
+        BlockNo     int // Which block is this from
+        TxOffset    int // The transaction in the block. In the block[BlockHash].Tx[TxOffset]
+        TxOutputPos int // Position of the output in the transaction. In the  block[BlockHash].Tx[TxOffset].Output[TxOutptuPos]
+        Amount      int // Value
+    }
+
+    type TxOutputType struct {
+        BlockNo     int              // Which block is this in
+        TxOffset    int              // Which transaction in this block.  block[this].Tx[TxOffset]
+        TxOutputPos int              // Position of the output in this block. In the  block[this].Tx[TxOffset].Output[TxOutptuPos]
+        Account     addr.AddressType // Acctount funds go to (If this is &quot;&quot;chagne&quot;&quot; then this is the same as TransactionType.Account
+        Amount      int              // Amoutn to go to accoutn
+    }
+</code></pre>
 
 </div>
 
