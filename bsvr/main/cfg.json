@@ -19,5 +19,5 @@
 		{ "AcctStr":"0xDb180Da9A8982C7Bb75Ca40039f959CB959c62e8", "Value": 500000 }
 	],
 	"MiningRewardAcct":"0xDb180Da9A8982C7Bb75Ca40039f959CB959c62e8",
-	"MiningDifficulty":"0"
+	"MiningDifficulty":"4"
 }

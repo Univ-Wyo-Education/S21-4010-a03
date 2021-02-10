@@ -97,8 +97,8 @@ func (cc *CLI) CreateGenesis(args []string) {
 // TestReadBlock Test code for command line.
 func (cc *CLI) TestReadBlock(args []string) {
 	// fnPath := cc.BuildBlockFileName("d16a4d4655b7d968201b02b48e8e9b9742df3a3de00946fe2b2a43022f166063")
-	//	fnPath := cc.BuildBlockFileName("6b09dc0d997f213a24a9aa2357134ef10d93d1141523e19a5c453923cf8f7b67")
-	fnPath := cc.BuildBlockFileName("8ff028fcee4fce256d8dd98bfb5184fa0e49ef9c582bbd72f3389a13dc5db899")
+	// fnPath := cc.BuildBlockFileName("8ff028fcee4fce256d8dd98bfb5184fa0e49ef9c582bbd72f3389a13dc5db899")
+	fnPath := cc.BuildBlockFileName("6b09dc0d997f213a24a9aa2357134ef10d93d1141523e19a5c453923cf8f7b67")
 	if !lib.Exists(fnPath) {
 		fmt.Printf("You must run \"./main --create-genesis\" first before this test.\n")
 		os.Exit(1)

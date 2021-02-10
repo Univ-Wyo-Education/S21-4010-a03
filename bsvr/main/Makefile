@@ -6,7 +6,7 @@ all:
 
 test: test001 test_sf0 test_sf1
 
-T1=8ff028fcee4fce256d8dd98bfb5184fa0e49ef9c582bbd72f3389a13dc5db899.json
+T1=6b09dc0d997f213a24a9aa2357134ef10d93d1141523e19a5c453923cf8f7b67.json
 
 test001:
 	go build
